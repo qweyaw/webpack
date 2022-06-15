@@ -2,7 +2,7 @@
  * @Description: Amy
  * @Author: Amy
  * @Date: 2022-06-10 16:08:42
- * @LastEditTime: 2022-06-15 15:10:52
+ * @LastEditTime: 2022-06-15 15:27:36
 -->
 ##  webpack 5
 
@@ -21,7 +21,7 @@ let result = (function() {
 
 ### 处理 less 文件
 
-```
+```json
 {
   // 处理 less 文件
   test: /\.less$/,
@@ -32,7 +32,7 @@ let result = (function() {
 
 ### 打包图片文件
 
-```
+```json
 {
   // 处理 图片 文件
   test: /\.(jpg|png|gif)$/,
@@ -52,7 +52,7 @@ let result = (function() {
 ```
 
 ### 处理 html 资源
-```
+```json
 plugins: [
   // 处理 html 资源
   new HtmlWebpackPlugin({
@@ -62,7 +62,7 @@ plugins: [
 ```
 
 ### devServer
-```
+```js
 // devServer: 自动化（自动编译、自动打开浏览器、自动刷新浏览器）
 // 特点： 只会在内存中编译打包，不会有任何输出
 // 启动指令： npx webpack-dev-server（需要下载webpack-dev-server）
@@ -82,7 +82,7 @@ devServer: {
 
 ### css 抽离为单独文件
 mini-css-extract-plugin
-```
+```js
 use: [
   MiniCssExtractPlugin.loader,
   // 将 css 转换成 js
@@ -97,7 +97,7 @@ plugins: [
 
 ### css 兼容性处理
 postcss-loader postcss-preset-env
-```
+```js
 {
   loader: "postcss-loader",
   options: {
@@ -107,27 +107,27 @@ postcss-loader postcss-preset-env
     ],
   },
 },
-json```
+```
 
 ### 压缩 css
 兼容性 一般 loader 处理
 压缩 一般 plugins 处理
 
 optimize-css-assets-webpack-plugin
-```
+```js
 new OptimizeCssAssetsPlugin(), // 压缩 css
 ```
 
 ### js 语法检查
 下载 eslint-loader eslint eslint-config-airbnb-base
 package.json
-```
+```json
 "eslintConfig": {
     "extends": "airbnb-base"
   }
-```
 // eslint-disable-next-line 下一行不进行 eslint 检查
 console.log(add(1, 2));
+```
 
 ### js 兼容性处理
 
@@ -138,7 +138,7 @@ js文件
 `import "@babel/polyfill";`
 问题： 全部引入 ，包体积太大
 3. 按需加载：core-js
-```
+```json
 {
   test: /\.js$/,
   exclude: /node_modules/,
