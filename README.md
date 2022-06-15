@@ -2,7 +2,7 @@
  * @Description: Amy
  * @Author: Amy
  * @Date: 2022-06-10 16:08:42
- * @LastEditTime: 2022-06-15 15:27:36
+ * @LastEditTime: 2022-06-15 15:32:43
 -->
 ##  webpack 5
 
@@ -21,7 +21,7 @@ let result = (function() {
 
 ### 处理 less 文件
 
-```json
+```js
 {
   // 处理 less 文件
   test: /\.less$/,
@@ -32,7 +32,7 @@ let result = (function() {
 
 ### 打包图片文件
 
-```json
+```js
 {
   // 处理 图片 文件
   test: /\.(jpg|png|gif)$/,
@@ -52,7 +52,7 @@ let result = (function() {
 ```
 
 ### 处理 html 资源
-```json
+```js
 plugins: [
   // 处理 html 资源
   new HtmlWebpackPlugin({
@@ -138,7 +138,7 @@ js文件
 `import "@babel/polyfill";`
 问题： 全部引入 ，包体积太大
 3. 按需加载：core-js
-```json
+```js
 {
   test: /\.js$/,
   exclude: /node_modules/,
