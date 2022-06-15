@@ -1,0 +1,5 @@
+.sy {
+    color: rgb(255, 0, 25);
+    display: flex;
+    backface-visibility: hidden;
+}
