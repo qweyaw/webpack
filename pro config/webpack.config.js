@@ -2,7 +2,7 @@
  * @Description: amy
  * @Author: Amy
  * @Date: 2022-06-15 11:26:53
- * @LastEditTime: 2022-06-15 15:09:07
+ * @LastEditTime: 2022-06-16 14:40:56
  */
 
 /* 
@@ -66,6 +66,7 @@ module.exports = {
         test: /\.js$/,
         loader: "eslint-loader",
         exclude: /node_modules/,
+        enforce: "pre", // js 文件的前置处理器，先于 babel-loader
         options: {
           // 自动修复
           fix: true,
@@ -140,6 +141,10 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: "./src/index.html",
+      minify: {
+        collapseWhitespace: true, // 删除空格
+        removeComments: true // 删除注释
+      },
     }),
     new MiniCssExtractPlugin({
       filename: "css/bundle.css", // 重命名
