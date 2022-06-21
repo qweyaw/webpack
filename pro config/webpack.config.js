@@ -2,7 +2,7 @@
  * @Description: amy
  * @Author: Amy
  * @Date: 2022-06-15 11:26:53
- * @LastEditTime: 2022-06-16 14:40:56
+ * @LastEditTime: 2022-06-21 11:14:41
  */
 
 /* 
@@ -22,7 +22,7 @@ module.exports = {
   entry: "./src/js/index.js",
   output: {
     path: resolve(__dirname, "dist"),
-    filename: "bundle.js",
+    filename: "bundle.[contenthash:10].js",
   },
   module: {
     rules: [
@@ -53,6 +53,9 @@ module.exports = {
               },
             ],
           ],
+          // 开启 babel 缓存
+          // 第二次构建时，会读取缓存
+          cacheDirectory: true,
         },
       },
       /* 
@@ -147,7 +150,7 @@ module.exports = {
       },
     }),
     new MiniCssExtractPlugin({
-      filename: "css/bundle.css", // 重命名
+      filename: "css/bundle.[contenthash:10].css", // 重命名
     }),
     new OptimizeCssAssetsPlugin(), // 压缩 css
   ],

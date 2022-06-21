@@ -2,9 +2,9 @@
  * @Description: Amy
  * @Author: Amy
  * @Date: 2022-06-10 16:08:42
- * @LastEditTime: 2022-06-16 15:43:58
+ * @LastEditTime: 2022-06-21 11:41:50
 -->
-##  webpack 5
+##  webpack
 
 ### 作用域问题
 
@@ -312,4 +312,79 @@ module: {
     ]
   ]
 }
+```
+
+4. 缓存
+babel 缓存
+cacheDirectory：true 开启缓存，第二次打包构建速度更快
+文件资源缓存：
+hash: 每次 webpack 构建时会生成一个唯一的 hash 值
+      问题：因为 css 和 js 使用同一个 hash 值
+            如果重新打包，会导致说有缓存失效 （可能改动一个文件）
+      chunkhash：根据 chunk 生成的 hash 值，如果打包来源同一个 chunk 那么 hash 值相同
+            问题：js 和 css 的 hash 值还是一样（因为 css 是在 js 中引入的，所以同属于一个chunk）
+      contenthash：根据文件内容生成的 hash 值，如果文件内容一样，hash 值也一样
+```js
+output: {
+  path: resolve(__dirname, "dist"),
+  filename: "bundle.[contenthash:10].js",
+},
+// 兼容性处理
+{
+  test: /\.js$/,
+  exclude: /node_modules/,
+  loader: "babel-loader",
+  options: {
+    presets: [],
+    // 开启 babel 缓存
+    // 第二次构建时，会读取缓存
+    cacheDirectory: true,
+  },
+}
+```
+5. tree-shaking
+
+前提： 
+  使用 es6 模块化， 开启 production 模式
+作用：
+  只提取使用到的代码，减少代码体积
+
+  package.json中配置：
+```json
+  "sideEffects": false
+```
+  所有代码都没有副作用（都可以进行 tree shaking）
+  问题：可能会把 css / @babel/polyfill（副作用） 文件干掉
+```json
+  "sideEffects": ["*.css"]
+```
+
+6. 代码分割 code splitting
+1.多入口 拆分文件
+  ```js
+  entry: {
+    main: './src/main.js',
+    test: './src/test.js',
+  }
+  ```
+2. optimization
+可以将 node_modules 中的代码单独打包为一个 chunk 文件最终输出
+自动分析 多入口chunk 中，有没有公共的文件，如果有会打包成一个单独的 chunk 文件
+```js
+optimization: {
+  splitChunks: {
+    chunks: 'all',
+  }
+}
+```
+
+3. 
+通过 js 代码，让某个文件单独打包成一个 chunk
+```js
+import(/* webpackChunkName: 'test.js' */'./test')
+  .then(() => {
+    console.log('test')
+  }).catche(() => {
+    console.log('error')
+  }
 ```
