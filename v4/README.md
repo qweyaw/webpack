@@ -2,7 +2,7 @@
  * @Description: Amy
  * @Author: Amy
  * @Date: 2022-06-10 16:08:42
- * @LastEditTime: 2022-06-24 16:14:32
+ * @LastEditTime: 2022-07-06 10:36:32
 -->
 
 ## webpack
@@ -49,7 +49,10 @@ plugins: [
   }),
 ],
 ```
-
+### 清理 dist 文件夹
+npm install clean-webpack-plugin --save-dev
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+new CleanWebpackPlugin(['dist']),
 ### devServer
 
 ```js
@@ -479,3 +482,96 @@ if ("serviceWorker" in navigator) {
      jquery: "JQuery";
    }
    ```
+
+
+const path = require('path');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const {CleanWebpackPlugin} = require("clean-webpack-plugin")
+module.exports = {
+  entry: "./src/index.js",
+  output: {
+    path: path.resolve(__dirname, 'dist'), filename: 'bundle.js'
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './index.html',
+      filename: 'index.html',
+      minify: {
+        collapseWhitespace: true, // 空格
+        removeComments: true, // 注释
+        removeAttributeQuotes: true, // 双引号
+        removeEmptyAttributes: true // 空属性
+      }
+    }),
+    new CleanWebpackPlugin()
+  ],
+  module: {
+    rules: [{
+      test: /\.(css)$/i,
+      use: [
+        "style-loader",
+        "css-loader"
+      ]
+    }, {
+      test: /\.(jpg|png|gif)$/,
+      loader: 'file-loader',
+      options: {
+        // 关闭es6模块化
+        esModule: false,
+        limit: 20 * 1024,
+        name: '[hash:10].[ext]',
+        outputPath: 'images'
+      }
+    }, {
+      test: /\.html$/,
+      loader: "html-loader",
+      options: {
+        esModule: false
+      }
+    },
+      // {
+      // test: /\.(woff|woff2|eot|ttf|otf)$/,
+      // loader: "file-loader",
+      // options: {
+      //   name: '[hash:10].[ext]',
+      //   outputPath: 'font'
+      // },
+    // }
+    ]
+  },
+  mode: "production"
+};
+
+{
+  "name": "bim-webdev",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "dependencies": {
+    "html-webpack-plugin": "^5.5.0",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0"
+  },
+  "devDependencies": {
+    "clean-webpack-plugin": "^4.0.0",
+    "css-loader": "^6.7.1",
+    "file-loader": "^6.2.0",
+    "html-loader": "^3.1.2",
+    "style-loader": "^3.3.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Movoui/static_web.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Movoui/static_web/issues"
+  },
+  "homepage": "https://github.com/Movoui/static_web#readme"
+}
